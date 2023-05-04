@@ -4,6 +4,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 /* 
 Очень странные дела
@@ -12,8 +13,10 @@ import java.util.List;
 
 
 Requirements:
-1. Логика чтения/записи реализованная в методах save/load должна работать корректно в случае, если список assets равен null.
-2. Логика чтения/записи реализованная в методах save/load должна работать корректно в случае, если поле name и список assets не равны null.
+1. Логика чтения/записи реализованная в методах save/load должна работать корректно в случае,
+если список assets равен null.
+2. Логика чтения/записи реализованная в методах save/load должна работать корректно в случае,
+если поле name и список assets не равны null.
 3. Класс Solution.Human не должен поддерживать интерфейс Serializable.
 4. Класс Solution.Human должен быть публичным.
 5. Класс Solution.Human не должен поддерживать интерфейс Externalizable.
@@ -24,7 +27,7 @@ public class Solution {
     public static void main(String[] args) {
         //исправь outputStream/inputStream в соответствии с путем к твоему реальному файлу
         try {
-            File your_file_name = File.createTempFile("your_file_name", null);
+            File your_file_name = new File("E:/a.txt");
             OutputStream outputStream = new FileOutputStream(your_file_name);
             InputStream inputStream = new FileInputStream(your_file_name);
 
@@ -42,7 +45,7 @@ public class Solution {
             //e.printStackTrace();
             System.out.println("Oops, something wrong with my file");
         } catch (Exception e) {
-            //e.printStackTrace();
+            e.printStackTrace();
             System.out.println("Oops, something wrong with save/load method");
         }
     }
@@ -58,7 +61,7 @@ public class Solution {
 
             Human human = (Human) o;
 
-            if (name == null ? !name.equals(human.name) : human.name != null) return false;
+            if (name != null ? !name.equals(human.name) : human.name != null) return false;
             return assets != null ? assets.equals(human.assets) : human.assets == null;
 
         }
@@ -67,7 +70,7 @@ public class Solution {
         public int hashCode() {
             int result = name != null ? name.hashCode() : 0;
             result = 31 * result + (assets != null ? assets.hashCode() : 0);
-            return (int) (Math.random() * 100);
+            return result;
         }
 
         public Human() {
@@ -88,6 +91,7 @@ public class Solution {
                 for (Asset current : this.assets)
                     printWriter.println(current.getName());
             }
+            printWriter.flush();
             printWriter.close();
         }
 
@@ -97,9 +101,17 @@ public class Solution {
 
             this.name = reader.readLine();
             String assetName;
-            while ((assetName = reader.readLine()) != null)
+            while ((assetName = reader.readLine()) != null )
                 this.assets.add(new Asset(assetName));
             reader.close();
+        }
+
+        @Override
+        public String toString() {
+            return "Human{" +
+                    "name='" + name + '\'' +
+                    ", assets=" + assets +
+                    '}';
         }
     }
 }
