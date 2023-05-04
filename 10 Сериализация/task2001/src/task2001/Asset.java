@@ -1,5 +1,7 @@
 package task2001;
 
+import java.io.Serializable;
+
 public class Asset {
     public Asset(String name, double price) {
         this.name = name;
