@@ -1,6 +1,6 @@
 package task2016;
 
-import java.io.Serializable;
+
 
 /* 
 Минимум изменений
@@ -17,8 +17,10 @@ Requirements:
 7. Класс B не должен явно поддерживать интерфейс Serializable.
 8. Класс C не должен явно поддерживать интерфейс Serializable.*/
 
-public class Solution {
-    public class A {
+import java.io.*;
+
+public class Solution implements Serializable{
+    public class A implements Serializable {
         String name = "A";
 
         public A(String name) {
@@ -29,6 +31,8 @@ public class Solution {
         public String toString() {
             return name;
         }
+
+
     }
 
     public class B extends A {
@@ -41,7 +45,7 @@ public class Solution {
     }
 
     public class C extends B {
-        String name = "C";
+        String name ;
 
         public C(String name) {
             super(name);
@@ -49,7 +53,30 @@ public class Solution {
         }
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException, ClassNotFoundException {
+        C c = new Solution().new C("C");
+        System.out.println(c);
 
+        File OUTPUT_FILE = new File("E:/a.txt");
+
+        FileOutputStream fileOutputStream = new FileOutputStream(OUTPUT_FILE);
+        ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
+        objectOutputStream.writeObject(c);
+
+        objectOutputStream.flush();
+        objectOutputStream.close();
+        fileOutputStream.close();
+
+        FileInputStream fileInputStream
+                = new FileInputStream(OUTPUT_FILE);
+        ObjectInputStream objectInputStream
+                = new ObjectInputStream(fileInputStream);
+
+        C c1 = (C) objectInputStream.readObject();
+
+        System.out.println(c1);
+
+        objectInputStream.close();
+        fileInputStream.close();
     }
 }

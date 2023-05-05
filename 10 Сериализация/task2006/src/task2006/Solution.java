@@ -1,6 +1,6 @@
 package task2006;
 
-import java.io.Serializable;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -17,7 +17,7 @@ Requirements:
 4. Класс Human должен поддерживать интерфейс Serializable.*/
 
 public class Solution {
-    public static class Human {
+    public static class Human implements Serializable{
         public String name;
         public List<String> assets = new ArrayList<>();
 
@@ -30,9 +30,24 @@ public class Solution {
                 this.assets.addAll(Arrays.asList(assets));
             }
         }
+
+        @Override
+        public String toString() {
+            return "Human{" +
+                    "name='" + name + '\'' +
+                    ", assets=" + assets +
+                    '}';
+        }
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException, ClassNotFoundException {
+        ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("E:/a.txt"));
+        Human human = new Human("John", "car", "home");
 
+        oos.writeObject(human);
+
+        ObjectInputStream ois = new ObjectInputStream(new FileInputStream("E:a.txt"));
+        Human human1 = (Human) ois.readObject();
+        System.out.println(human1);
     }
 }
